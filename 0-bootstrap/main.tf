@@ -57,6 +57,7 @@ module "seed_bootstrap" {
   activate_apis = [
     "serviceusage.googleapis.com",
     "servicenetworking.googleapis.com",
+    "cloudkms.googleapis.com",
     "compute.googleapis.com",
     "logging.googleapis.com",
     "bigquery.googleapis.com",
@@ -114,8 +115,8 @@ module "cloudbuild_bootstrap" {
   project_prefix              = var.project_prefix
   cloud_source_repos          = var.cloud_source_repos
   terraform_validator_release = "2021-01-21"
-  terraform_version           = "0.13.5"
-  terraform_version_sha256sum = "f7b7a7b1bfbf5d78151cfe3d1d463140b5fd6a354e71a7de2b5644e652ca5147"
+  terraform_version           = "0.13.6"
+  terraform_version_sha256sum = "55f2db00b05675026be9c898bdd3e8230ff0c5c78dd12d743ca38032092abfc9"
 
   activate_apis = [
     "serviceusage.googleapis.com",
@@ -175,6 +176,34 @@ resource "google_folder_iam_member" "folder_cb_sa_browser" {
   folder = var.parent_folder
   role   = "roles/browser"
   member = "serviceAccount:${data.google_project.cloudbuild.number}@cloudbuild.gserviceaccount.com"
+}
+
+resource "google_organization_iam_member" "org_tf_compute_security_policy_admin" {
+  count  = var.parent_folder == "" ? 1 : 0
+  org_id = var.org_id
+  role   = "roles/compute.orgSecurityPolicyAdmin"
+  member = "serviceAccount:${module.seed_bootstrap.terraform_sa_email}"
+}
+
+resource "google_folder_iam_member" "folder_tf_compute_security_policy_admin" {
+  count  = var.parent_folder != "" ? 1 : 0
+  folder = var.parent_folder
+  role   = "roles/compute.orgSecurityPolicyAdmin"
+  member = "serviceAccount:${module.seed_bootstrap.terraform_sa_email}"
+}
+
+resource "google_organization_iam_member" "org_tf_compute_security_resource_admin" {
+  count  = var.parent_folder == "" ? 1 : 0
+  org_id = var.org_id
+  role   = "roles/compute.orgSecurityResourceAdmin"
+  member = "serviceAccount:${module.seed_bootstrap.terraform_sa_email}"
+}
+
+resource "google_folder_iam_member" "folder_tf_compute_security_resource_admin" {
+  count  = var.parent_folder != "" ? 1 : 0
+  folder = var.parent_folder
+  role   = "roles/compute.orgSecurityResourceAdmin"
+  member = "serviceAccount:${module.seed_bootstrap.terraform_sa_email}"
 }
 
 ## Un-comment the jenkins_bootstrap module and its outputs if you want to use Jenkins instead of Cloud Build
