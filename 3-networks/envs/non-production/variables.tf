@@ -1,5 +1,5 @@
 /**
- * Copyright 2020 Google LLC
+ * Copyright 2021 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ variable "org_id" {
 
 variable "access_context_manager_policy_id" {
   type        = number
-  description = "The id of the default Access Context Manager policy created in step `1-org`. Can be obtained by running `gcloud access-context-manager policies list --organization YOUR-ORGANIZATION_ID --format=\"value(name)\"`."
+  description = "The id of the default Access Context Manager policy created in step `1-org`. Can be obtained by running `gcloud access-context-manager policies list --organization YOUR_ORGANIZATION_ID --format=\"value(name)\"`."
 }
 
 variable "terraform_service_account" {
@@ -114,4 +114,34 @@ variable "parent_folder" {
   description = "Optional - if using a folder for testing."
   type        = string
   default     = ""
+}
+
+variable "folder_prefix" {
+  description = "Name prefix to use for folders created."
+  type        = string
+  default     = "fldr"
+}
+
+variable "enable_hub_and_spoke" {
+  description = "Enable Hub-and-Spoke architecture."
+  type        = bool
+  default     = false
+}
+
+variable "enable_partner_interconnect" {
+  description = "Enable Partner Interconnect in the environment."
+  type        = bool
+  default     = false
+}
+
+variable "preactivate_partner_interconnect" {
+  description = "Preactivate Partner Interconnect VLAN attachment in the environment."
+  type        = bool
+  default     = false
+
+}
+variable "enable_hub_and_spoke_transitivity" {
+  description = "Enable transitivity via gateway VMs on Hub-and-Spoke architecture."
+  type        = bool
+  default     = false
 }

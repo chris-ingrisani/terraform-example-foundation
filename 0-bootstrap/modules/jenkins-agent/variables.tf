@@ -1,5 +1,5 @@
 /**
- * Copyright 2019 Google LLC
+ * Copyright 2021 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -141,7 +141,7 @@ variable "tunnel1_bgp_session_range" {
 /* ----------------------------------------
     Specific to Seed Project
    ---------------------------------------- */
-variable "terraform_sa_email" {
+variable "terraform_service_account" {
   description = "Email for terraform service account. It must be supplied by the seed project"
   type        = string
 }
@@ -224,17 +224,11 @@ variable "folder_id" {
 variable "terraform_version" {
   description = "Default terraform version."
   type        = string
-  default     = "0.12.24"
+  default     = "0.13.6"
 }
 
 variable "terraform_version_sha256sum" {
   description = "sha256sum for default terraform version."
   type        = string
-  default     = "602d2529aafdaa0f605c06adb7c72cfb585d8aa19b3f4d8d189b42589e27bf11"
-}
-
-variable "skip_gcloud_download" {
-  description = "Whether to skip downloading gcloud (assumes gcloud is already available outside the module)"
-  type        = bool
-  default     = true
+  default     = "55f2db00b05675026be9c898bdd3e8230ff0c5c78dd12d743ca38032092abfc9"
 }
